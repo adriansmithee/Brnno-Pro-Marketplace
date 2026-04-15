@@ -3,855 +3,619 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Brnno Pro — Job Board for Home Service Pros</title>
+<title>Brnno Pro — Job Board for Service Pros</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#F7F5F0;--sf:#FFF;--s2:#F0EDE8;--s3:#E8E5DF;
-  --tx:#1A1814;--t2:#6B6860;--t3:#9B9890;
-  --bd:#E2DED8;--b2:#CCC9C2;
-  --gold:#C8860A;--gbg:#FFF8EC;--gbdr:#F0D090;
-  --blue:#1A5FA8;--bbg:#EBF3FF;
-  --grn:#1D7A50;--grbg:#EDFAF3;
-  --red:#B83030;--rbg:#FEF0F0;
-  --pur:#7B2FBE;--pbg:#F3EBFE;
-  --r:10px;--rl:16px;
-}
+:root{--bg:#F7F5F0;--sf:#FFF;--s2:#F0EDE8;--tx:#1A1814;--t2:#6B6860;--t3:#9B9890;--bd:#E2DED8;--b2:#CCC9C2;--gold:#C8860A;--gbg:#FFF8EC;--gbdr:#F0D090;--blue:#1A5FA8;--bbg:#EBF3FF;--grn:#1D7A50;--grbg:#EDFAF3;--red:#B83030;--rbg:#FEF0F0;--pur:#7B2FBE;--pbg:#F3EBFE;--r:10px;--rl:16px}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);font-size:14px;min-height:100vh}
 .awrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--tx);padding:20px}
 .acard{background:#fff;border-radius:var(--rl);padding:36px;width:100%;max-width:420px}
-.alogo{font-family:'Syne',sans-serif;font-weight:800;font-size:26px;margin-bottom:4px;color:var(--tx)}.alogo span{color:var(--gold)}
-.ahero{font-size:13px;color:var(--t2);margin-bottom:20px;line-height:1.5}
-.atabs{display:flex;border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:20px}
-.atab{flex:1;padding:9px;text-align:center;font-size:13px;font-weight:600;cursor:pointer;background:transparent;border:none;font-family:'DM Sans',sans-serif;color:var(--t2);transition:all .15s}
+.alogo{font-family:'Syne',sans-serif;font-weight:800;font-size:26px;margin-bottom:4px}.alogo span{color:var(--gold)}
+.asub{font-size:13px;color:var(--t2);margin-bottom:20px}
+.atabs{display:flex;border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:18px}
+.atab{flex:1;padding:9px;text-align:center;font-size:13px;font-weight:600;cursor:pointer;background:transparent;border:none;font-family:'DM Sans',sans-serif;color:var(--t2)}
 .atab.active{background:var(--tx);color:#fff}
 .fg{margin-bottom:13px}
 .flbl{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t2);margin-bottom:5px}
-.finp,.fsel{width:100%;border:1px solid var(--b2);border-radius:var(--r);padding:10px 13px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--tx);background:#fff;outline:none;transition:border .15s}
-.finp:focus,.fsel:focus{border-color:var(--gold)}
-.bauth{width:100%;background:var(--gold);color:#fff;border:none;padding:12px;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:4px;transition:background .15s}
-.bauth:hover{background:#A87008}
-.bauth:disabled{opacity:.5;cursor:not-allowed}
-.aerr{background:var(--rbg);color:var(--red);border:1px solid #F5BFBF;border-radius:var(--r);padding:10px 13px;font-size:12px;margin-bottom:14px;display:none}
-.asucc{background:var(--grbg);color:var(--grn);border:1px solid #A0D8B8;border-radius:var(--r);padding:10px 13px;font-size:12px;margin-bottom:14px;display:none}
-
-/* NAV */
+.finp{width:100%;border:1px solid var(--b2);border-radius:var(--r);padding:10px 12px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--tx);background:#fff;outline:none;transition:border .15s}
+.finp:focus{border-color:var(--gold)}
+.fsel{width:100%;border:1px solid var(--b2);border-radius:var(--r);padding:10px 12px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--tx);background:#fff;outline:none;cursor:pointer}
+.bauth{width:100%;background:var(--gold);color:#fff;border:none;padding:12px;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:4px}
+.bauth:hover{background:#A87008}.bauth:disabled{opacity:.6;cursor:not-allowed}
+.aerr{background:var(--rbg);color:var(--red);border:1px solid #F5BFBF;border-radius:var(--r);padding:10px 12px;font-size:12px;margin-bottom:12px;display:none}
 .nav{background:var(--tx);padding:0 20px;display:flex;align-items:center;position:sticky;top:0;z-index:100}
-.nlogo{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;color:#fff;padding:13px 0;margin-right:20px;cursor:pointer}.nlogo span{color:var(--gold)}
+.nlogo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:#fff;padding:13px 0;margin-right:24px;cursor:pointer}.nlogo span{color:var(--gold)}
 .ntabs{display:flex;flex:1;overflow-x:auto}
-.ntab{padding:14px 14px;color:rgba(255,255,255,.5);font-size:12px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;border-top:none;border-left:none;border-right:none;background:none;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:color .15s}
-.ntab:hover{color:rgba(255,255,255,.8)}
-.ntab.active{color:#fff;border-bottom-color:var(--gold)}
-.nright{display:flex;align-items:center;gap:8px;padding:9px 0;margin-left:auto}
-.nbtn{background:var(--gold);color:#fff;border:none;padding:7px 14px;border-radius:var(--r);font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+.ntab{padding:14px;color:rgba(255,255,255,.5);font-size:12px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;border-top:none;border-left:none;border-right:none;background:none;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.ntab:hover{color:rgba(255,255,255,.8)}.ntab.active{color:#fff;border-bottom-color:var(--gold)}
+.nright{display:flex;align-items:center;gap:10px;padding:9px 0;margin-left:auto}
+.nbtn{background:var(--gold);color:#fff;border:none;padding:7px 15px;border-radius:var(--r);font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+.nav-av{width:30px;height:30px;border-radius:50%;background:#3A3630;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:rgba(255,255,255,.8);cursor:pointer}
 .pdrop{position:relative}
-.nav-av{width:30px;height:30px;border-radius:50%;background:#3A3630;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:rgba(255,255,255,.8);cursor:pointer;flex-shrink:0}
-.pmenu{position:absolute;top:calc(100%+4px);right:0;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);box-shadow:0 6px 20px rgba(0,0,0,.1);min-width:160px;display:none;z-index:200}
-.pmenu.open{display:block}
-.pmi{padding:10px 16px;font-size:12px;color:var(--tx);cursor:pointer;transition:background .1s}.pmi:hover{background:var(--s2)}
-.pmi.red{color:var(--red)}
-.psep{height:1px;background:var(--bd)}
-
-/* LAYOUT */
+.pmenu{position:absolute;top:calc(100% + 4px);right:0;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);box-shadow:0 6px 20px rgba(0,0,0,.1);min-width:170px;display:none;z-index:300}
+.pmenu.open{display:block}.pmi{padding:10px 15px;font-size:12px;color:var(--tx);cursor:pointer}.pmi:hover{background:var(--s2)}.pmi.danger{color:var(--red)}.psep{height:1px;background:var(--bd)}
 .page{display:none;min-height:calc(100vh - 48px)}.page.active{display:block}
 .inner{max-width:1100px;margin:0 auto;padding:22px 20px}
-
-/* HERO BANNER */
-.hero{background:linear-gradient(135deg,#1A1814 60%,#3A2808);padding:40px 20px;text-align:center;color:#fff}
-.hero-title{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;margin-bottom:10px;line-height:1.2}
-.hero-title span{color:var(--gold)}
-.hero-sub{font-size:15px;color:rgba(255,255,255,.65);max-width:520px;margin:0 auto 24px}
-.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.hero-btn-pri{background:var(--gold);color:#fff;border:none;padding:12px 28px;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
-.hero-btn-sec{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.3);padding:12px 28px;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
-.hero-stats{display:flex;gap:32px;justify-content:center;margin-top:28px;flex-wrap:wrap}
-.hero-stat{text-align:center}
-.hero-stat-num{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gold)}
-.hero-stat-lbl{font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em}
-
-/* FILTERS */
 .fbar{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rl);padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.flb{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.flb{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em}
 .chip{padding:5px 12px;border-radius:18px;border:1px solid var(--b2);background:transparent;font-size:12px;color:var(--t2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap}
-.chip:hover{border-color:var(--tx)}
 .chip.on{background:var(--tx);color:#fff;border-color:var(--tx)}
-.chip.on.cg{background:var(--gold);border-color:var(--gold)}
-.vsep{width:1px;height:16px;background:var(--bd);flex-shrink:0}
-.sinp{border:1px solid var(--b2);border-radius:var(--r);padding:6px 12px;font-size:12px;background:var(--s2);color:var(--tx);font-family:'DM Sans',sans-serif;outline:none;width:180px;margin-left:auto}
+.vsep{width:1px;height:18px;background:var(--bd);flex-shrink:0}
+.sinp{border:1px solid var(--b2);border-radius:var(--r);padding:6px 12px;font-size:12px;background:var(--s2);color:var(--tx);font-family:'DM Sans',sans-serif;outline:none;width:200px;margin-left:auto}
 .sinp:focus{border-color:var(--gold);background:#fff}
 .shdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
-.stitle{font-family:'Syne',sans-serif;font-size:15px;font-weight:700}
-
-/* JOB CARDS - MAIN FEATURE */
-.jgrid{display:flex;flex-direction:column;gap:10px}
-.jcard{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rl);padding:20px;display:flex;gap:14px;cursor:pointer;transition:all .18s}
-.jcard:hover{border-color:var(--gold);box-shadow:0 4px 20px rgba(200,134,10,.1);transform:translateY(-1px)}
-.jcard.featured{border-color:var(--gold);background:linear-gradient(to right,var(--gbg),var(--sf))}
-.jicon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.jicon.detailing{background:#FFF0E0}
-.jicon.pressure{background:#E0F0FF}
-.jicon.lawn{background:#E5F5E5}
-.jicon.window{background:#EEF0FF}
-.jicon.hvac{background:#FFE8E8}
-.jicon.other{background:var(--pbg)}
+.stitle{font-family:'Syne',sans-serif;font-size:16px;font-weight:700}
+.jcard{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rl);padding:20px;display:flex;gap:15px;cursor:pointer;transition:all .18s;margin-bottom:10px}
+.jcard:hover{border-color:var(--b2);box-shadow:0 4px 18px rgba(0,0,0,.07);transform:translateY(-1px)}
+.jicon{width:48px;height:48px;border-radius:12px;background:var(--pbg);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
 .jmain{flex:1;min-width:0}
-.jbadge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;margin-bottom:6px}
-.jbadge.urgent{background:#FFE8E8;color:var(--red)}
-.jbadge.featured{background:var(--gbg);color:var(--gold);border:1px solid var(--gbdr)}
-.jbadge.open{background:var(--grbg);color:var(--grn)}
-.jtitle{font-size:15px;font-weight:700;margin-bottom:4px;line-height:1.3;color:var(--tx)}
-.jdesc{font-size:12px;color:var(--t2);margin-bottom:10px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.jtags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
-.jtag{padding:3px 8px;background:var(--s2);border-radius:5px;font-size:11px;color:var(--t2);border:1px solid var(--bd)}
-.jmeta{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.jpay{font-size:18px;font-weight:800;color:var(--grn)}
-.jpay-note{font-size:10px;color:var(--t3);font-weight:400;margin-left:2px}
-.jstat{font-size:11px;color:var(--t3);display:flex;align-items:center;gap:3px}
-.jside{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;min-width:100px}
+.jtitle{font-size:15px;font-weight:700;margin-bottom:4px;line-height:1.3}
+.jdesc{font-size:13px;color:var(--t2);margin-bottom:10px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.tag{padding:3px 8px;background:var(--s2);border-radius:5px;font-size:11px;color:var(--t2);border:1px solid var(--bd)}
+.jmeta{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.jpay{font-size:17px;font-weight:800;color:var(--grn)}
+.jstat{font-size:12px;color:var(--t3)}
+.jside{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
 .bpill{background:var(--gbg);color:var(--gold);border:1px solid var(--gbdr);padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700}
-.btn-bid{background:var(--gold);color:#fff;border:none;padding:9px 18px;border-radius:var(--r);font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:background .15s}
-.btn-bid:hover{background:#A87008}
-.btn-sec{background:transparent;color:var(--t2);border:1px solid var(--b2);padding:8px 14px;border-radius:var(--r);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
-
-/* LISTING GRID */
-.lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:13px}
-.lcard{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rl);overflow:hidden;cursor:pointer;transition:all .18s;display:flex;flex-direction:column}
-.lcard:hover{border-color:var(--b2);box-shadow:0 4px 16px rgba(0,0,0,.07);transform:translateY(-1px)}
-.lcimg{height:150px;background:var(--s2);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:44px}
-.lcimg img{width:100%;height:100%;object-fit:cover}
-.lbtype{position:absolute;top:8px;left:8px;padding:3px 8px;border-radius:10px;font-size:10px;font-weight:700}
-.brent{background:var(--bbg);color:var(--blue)}
-.bsell{background:var(--grbg);color:var(--grn)}
-.lprice{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.7);color:#fff;padding:3px 9px;border-radius:10px;font-size:11px;font-weight:700}
-.lcbody{padding:12px 14px;flex:1;display:flex;flex-direction:column;gap:5px}
-.lctitle{font-size:13px;font-weight:600;line-height:1.3}
-.lcloc{font-size:11px;color:var(--t3)}
-.lcft{padding:8px 14px;border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
-.mini-av{width:20px;height:20px;border-radius:50%;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:var(--t2)}
-
-/* MODAL */
-.ovl{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:flex-start;justify-content:center;padding:30px 14px;overflow-y:auto}
+.bbid{background:var(--gold);color:#fff;border:none;padding:9px 18px;border-radius:var(--r);font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+.bbid:hover{background:#A87008}
+.bout{background:transparent;color:var(--t2);border:1px solid var(--b2);padding:8px 14px;border-radius:var(--r);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.ovl{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:flex-start;justify-content:center;padding:30px 16px;overflow-y:auto}
 .ovl.open{display:flex}
 .modal{background:var(--sf);border-radius:var(--rl);width:100%;max-width:680px;animation:su .2s ease}
-@keyframes su{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes su{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 .mhdr{padding:18px 22px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
 .mhtitle{font-family:'Syne',sans-serif;font-size:17px;font-weight:700}
 .mx{width:30px;height:30px;border-radius:50%;background:var(--s2);border:none;cursor:pointer;font-size:16px;color:var(--t2);display:flex;align-items:center;justify-content:center}
 .mbody{padding:22px}
-.mprice{font-size:28px;font-weight:800;color:var(--grn);margin-bottom:3px}
+.mprice{font-size:26px;font-weight:800;color:var(--grn);margin-bottom:2px}
 .msub{font-size:12px;color:var(--t2);margin-bottom:16px}
 .msec{margin-bottom:18px}
 .mlbl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}
-.mval{font-size:13px;color:var(--tx);line-height:1.6}
-.poster-strip{background:var(--s2);border-radius:var(--r);padding:13px;display:flex;align-items:center;gap:11px;margin-bottom:18px}
-.poster-av{width:42px;height:42px;border-radius:50%;background:var(--gbg);color:var(--gold);font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.poster-name{font-weight:700;font-size:14px;margin-bottom:2px}
-.poster-stat{font-size:11px;color:var(--t2)}
-
-/* BID SECTION */
-.bid-box{background:var(--gbg);border:2px solid var(--gbdr);border-radius:var(--rl);padding:18px;margin-bottom:18px}
-.bid-box-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:12px;color:var(--tx)}
-.bid-row{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap}
-.bid-amt{width:120px;border:1px solid var(--gbdr);border-radius:var(--r);padding:10px 12px;font-size:16px;font-weight:700;font-family:'DM Sans',sans-serif;background:#fff;color:var(--tx);outline:none;flex-shrink:0}
-.bid-amt:focus{border-color:var(--gold)}
-.bid-note{flex:1;min-width:180px;border:1px solid var(--gbdr);border-radius:var(--r);padding:10px 12px;font-size:12px;font-family:'DM Sans',sans-serif;background:#fff;color:var(--tx);outline:none;resize:none;min-height:60px}
-.bid-note:focus{border-color:var(--gold)}
-.btn-submit-bid{background:var(--gold);color:#fff;border:none;padding:10px 20px;border-radius:var(--r);font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;align-self:flex-end;transition:background .15s}
-.btn-submit-bid:hover{background:#A87008}
-.bid-fee-note{font-size:11px;color:#8B6010;margin-top:8px;line-height:1.5}
-
-/* BIDS LIST */
-.bids-hdr{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px}
-.bid-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bd)}
-.bid-item:last-child{border-bottom:none}
-.bid-av{width:32px;height:32px;border-radius:50%;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--t2);flex-shrink:0}
-.bid-info{flex:1;min-width:0}
-.bid-name{font-weight:600;font-size:13px}
-.bid-note-txt{font-size:11px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bid-amount{font-size:16px;font-weight:800;color:var(--grn);margin-right:8px}
-.btn-accept{background:var(--grn);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
-
-/* POST JOB FORM */
-.pwrap{max-width:640px;margin:0 auto}
+.mval{font-size:13px;color:var(--tx);line-height:1.7}
+.sstrip{background:var(--s2);border-radius:var(--r);padding:13px;display:flex;align-items:center;gap:11px;margin-bottom:18px}
+.sav{width:42px;height:42px;border-radius:50%;background:var(--gbg);color:var(--gold);font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sname{font-weight:700;font-size:14px;margin-bottom:2px}.sstat{font-size:11px;color:var(--t2)}
+.btn-full{width:100%;background:var(--gold);color:#fff;border:none;padding:12px;border-radius:var(--r);font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:10px}
+.btn-full:hover{background:#A87008}.btn-full:disabled{opacity:.5;cursor:not-allowed}
+.fnote{font-size:11px;color:var(--t3);text-align:center}
+.bidbox{background:var(--gbg);border:1px solid var(--gbdr);border-radius:var(--r);padding:16px;margin-bottom:16px}
+.bbtitle{font-weight:700;font-size:13px;margin-bottom:12px}
+.bid-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.bid-amt-inp{border:1.5px solid var(--gbdr);border-radius:var(--r);padding:9px 12px;font-size:16px;font-weight:700;font-family:'DM Sans',sans-serif;background:#fff;color:var(--tx);outline:none;width:130px}
+.bid-amt-inp:focus{border-color:var(--gold)}
+.bbnote{width:100%;border:1px solid var(--gbdr);border-radius:var(--r);padding:10px 12px;font-size:13px;font-family:'DM Sans',sans-serif;background:#fff;color:var(--tx);outline:none;resize:vertical;min-height:72px;margin-bottom:10px}
+.bbnote:focus{border-color:var(--gold)}
+.bbsub{background:var(--gold);color:#fff;border:none;padding:11px 24px;border-radius:var(--r);font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%}
+.bbsub:disabled{opacity:.5;cursor:not-allowed}
+.bbfee{font-size:11px;color:#8B6010;margin-top:8px;text-align:center}
+.bids-section{border-top:1px solid var(--bd);padding-top:16px;margin-top:4px}
+.blbl{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
+.bitem{display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--s2);border-radius:var(--r);margin-bottom:8px}
+.bav{width:34px;height:34px;border-radius:50%;background:var(--sf);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--t2);border:1px solid var(--bd);flex-shrink:0;margin-top:2px}
+.binfo{flex:1;min-width:0}
+.bname{font-weight:700;font-size:13px;margin-bottom:3px}
+.bnote{font-size:12px;color:var(--t2);line-height:1.5}
+.bamt{font-size:16px;font-weight:800;color:var(--grn);margin-right:8px;flex-shrink:0}
+.bacc{background:var(--grn);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0}
+.pwrap{max-width:680px;margin:0 auto}
 .pcard{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rl);padding:28px}
 .ptitle{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:6px}
-.psub{font-size:12px;color:var(--t2);margin-bottom:22px}
-.post-type-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
-.post-type-opt{border:2px solid var(--bd);border-radius:var(--r);padding:14px 12px;text-align:center;cursor:pointer;transition:all .15s}
-.post-type-opt:hover{border-color:var(--b2)}
-.post-type-opt.sel-job{border-color:var(--gold);background:var(--gbg)}
-.post-type-opt.sel-eq{border-color:var(--blue);background:var(--bbg)}
-.post-type-icon{font-size:22px;margin-bottom:5px}
-.post-type-lbl{font-size:12px;font-weight:700;color:var(--tx)}
-.post-type-desc{font-size:10px;color:var(--t2);margin-top:2px}
-.fee-strip{background:var(--gbg);border:1px solid var(--gbdr);border-radius:var(--r);padding:10px 14px;font-size:12px;color:#7A5A0A;margin-bottom:18px;line-height:1.5}
+.psub{font-size:13px;color:var(--t2);margin-bottom:24px}
 .prow{margin-bottom:14px}
 .plbl{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t2);margin-bottom:5px}
-.pinp{width:100%;border:1px solid var(--b2);border-radius:var(--r);padding:9px 12px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--tx);background:#fff;outline:none;transition:border .15s}
+.pinp{width:100%;border:1px solid var(--b2);border-radius:var(--r);padding:10px 12px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--tx);background:#fff;outline:none}
 .pinp:focus{border-color:var(--gold)}
-.psel{width:100%;border:1px solid var(--b2);border-radius:var(--r);padding:9px 12px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--tx);background:#fff;outline:none;cursor:pointer}
-.pta{width:100%;border:1px solid var(--b2);border-radius:var(--r);padding:9px 12px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--tx);background:#fff;outline:none;resize:vertical;min-height:90px}
+.psel{width:100%;border:1px solid var(--b2);border-radius:var(--r);padding:10px 12px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--tx);background:#fff;outline:none;cursor:pointer}
+.pta{width:100%;border:1px solid var(--b2);border-radius:var(--r);padding:10px 12px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--tx);background:#fff;outline:none;resize:vertical;min-height:100px}
 .pta:focus{border-color:var(--gold)}
 .tcol{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.btn-post{width:100%;background:var(--gold);color:#fff;border:none;padding:13px;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:6px;transition:background .15s}
-.btn-post:hover{background:#A87008}
-.btn-post:disabled{opacity:.5;cursor:not-allowed}
-
-/* DASH */
+.feestrip{background:var(--gbg);border:1px solid var(--gbdr);border-radius:var(--r);padding:11px 14px;font-size:12px;color:#7A5A0A;margin-bottom:20px;line-height:1.6}
+.psub-btn{width:100%;background:var(--gold);color:#fff;border:none;padding:13px;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:6px}
+.psub-btn:hover{background:#A87008}.psub-btn:disabled{opacity:.5;cursor:not-allowed}
 .dstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px}
 .dcard{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rl);padding:16px 18px}
 .dlbl{font-size:10px;color:var(--t2);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
 .dval{font-size:23px;font-weight:700;font-family:'Syne',sans-serif;color:var(--tx)}
-
-.empty{text-align:center;padding:56px 20px}
-.eicon{font-size:38px;margin-bottom:12px;opacity:.4}
-.emsg{font-size:13px;color:var(--t2);margin-bottom:16px}
+.sbadge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700}
+.s-open{background:var(--grbg);color:var(--grn)}.s-prog{background:var(--bbg);color:var(--blue)}.s-done{background:var(--s2);color:var(--t2)}.s-rej{background:var(--rbg);color:var(--red)}
+.star-btn{font-size:26px;cursor:pointer;opacity:.25;transition:opacity .1s;background:none;border:none;padding:0;line-height:1}
+.star-btn.on{opacity:1}
+.star-picker{display:flex;gap:6px;margin-bottom:12px}
+.empty{text-align:center;padding:52px 20px}
+.eicon{font-size:36px;margin-bottom:12px;opacity:.4}
+.emsg{font-size:14px;color:var(--t2);margin-bottom:16px}
 .toast{position:fixed;bottom:22px;right:22px;background:var(--tx);color:#fff;padding:11px 18px;border-radius:var(--r);font-size:13px;font-weight:500;z-index:9999;transform:translateY(80px);opacity:0;transition:all .28s;max-width:320px;line-height:1.4}
 .toast.show{transform:translateY(0);opacity:1}
-.loading{display:flex;align-items:center;justify-content:center;padding:48px;color:var(--t2);font-size:13px;gap:10px}
-.spin{width:20px;height:20px;border:2px solid var(--bd);border-top-color:var(--gold);border-radius:50%;animation:sp .7s linear infinite;flex-shrink:0}
+.loading{display:flex;align-items:center;justify-content:center;padding:48px;color:var(--t2);font-size:13px}
+.spin{width:22px;height:22px;border:2px solid var(--bd);border-top-color:var(--gold);border-radius:50%;animation:sp .7s linear infinite;margin-right:10px}
 @keyframes sp{to{transform:rotate(360deg)}}
-@media(max-width:640px){.tcol,.post-type-grid{grid-template-columns:1fr}.jside{flex-direction:row;align-items:center;min-width:auto}}
+@media(max-width:620px){.tcol{grid-template-columns:1fr}.jcard{flex-wrap:wrap}.jside{flex-direction:row;width:100%;justify-content:space-between}}
 </style>
 </head>
 <body>
 
-<!-- AUTH PAGE -->
 <div id="auth-page">
-  <div class="awrap">
-    <div class="acard">
-      <div class="alogo">brnno<span>pro</span></div>
-      <div class="ahero">The marketplace where home service pros find work, hire help, and rent equipment — all in one place.</div>
-      <div class="atabs">
-        <button class="atab active" id="t-in" onclick="switchTab('in')">Sign In</button>
-        <button class="atab" id="t-up" onclick="switchTab('up')">Create Account</button>
-      </div>
-      <div class="aerr" id="aerr"></div>
-      <div class="asucc" id="asucc"></div>
-
-      <div id="f-in">
-        <div class="fg"><label class="flbl">Email</label><input class="finp" type="email" id="si-em" placeholder="you@example.com" autocomplete="email"></div>
-        <div class="fg"><label class="flbl">Password</label><input class="finp" type="password" id="si-pw" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')signIn()"></div>
-        <button class="bauth" id="si-btn" onclick="signIn()">Sign In →</button>
-      </div>
-
-      <div id="f-up" style="display:none">
-        <div class="fg"><label class="flbl">Full Name</label><input class="finp" type="text" id="su-nm" placeholder="Jake Martinez"></div>
-        <div class="fg"><label class="flbl">Email</label><input class="finp" type="email" id="su-em" placeholder="you@example.com"></div>
-        <div class="fg"><label class="flbl">Password</label><input class="finp" type="password" id="su-pw" placeholder="At least 6 characters"></div>
-        <div class="fg"><label class="flbl">Your Trade / Service</label>
-          <select class="fsel" id="su-tr">
-            <option value="">Select your trade...</option>
-            <option value="Auto Detailing">Auto Detailing</option>
-            <option value="Pressure Washing">Pressure Washing</option>
-            <option value="Window Cleaning">Window Cleaning</option>
-            <option value="Lawn Care">Lawn Care</option>
-            <option value="HVAC">HVAC</option>
-            <option value="Plumbing">Plumbing</option>
-            <option value="Electrical">Electrical</option>
-            <option value="Painting">Painting</option>
-            <option value="General Contracting">General Contracting</option>
-            <option value="Cleaning Services">Cleaning Services</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div class="fg"><label class="flbl">City / State</label><input class="finp" type="text" id="su-ct" placeholder="Salt Lake City, UT"></div>
-        <button class="bauth" id="su-btn" onclick="signUp()">Create Account →</button>
-      </div>
-      <div style="margin-top:16px;text-align:center;font-size:10px;color:var(--t3)">By continuing you agree to our Terms &amp; Privacy Policy</div>
-    </div>
+<div class="awrap"><div class="acard">
+  <div class="alogo">brnno<span>pro</span></div>
+  <div class="asub">Where home service pros find work, post jobs, and grow their business.</div>
+  <div class="atabs">
+    <button class="atab active" id="tab-signin" onclick="showAuthTab('signin')">Sign In</button>
+    <button class="atab" id="tab-signup" onclick="showAuthTab('signup')">Create Account</button>
   </div>
+  <div class="aerr" id="auth-err"></div>
+  <div id="signin-form">
+    <div class="fg"><label class="flbl">Email</label><input class="finp" type="email" id="si-email" placeholder="you@example.com" autocomplete="email" onkeydown="if(event.key==='Enter')signIn()"></div>
+    <div class="fg"><label class="flbl">Password</label><input class="finp" type="password" id="si-pass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')signIn()"></div>
+    <button class="bauth" id="signin-btn" onclick="signIn()">Sign In →</button>
+  </div>
+  <div id="signup-form" style="display:none">
+    <div class="fg"><label class="flbl">Full Name</label><input class="finp" type="text" id="su-name" placeholder="Jake Martinez"></div>
+    <div class="fg"><label class="flbl">Email</label><input class="finp" type="email" id="su-email" placeholder="you@example.com"></div>
+    <div class="fg"><label class="flbl">Password</label><input class="finp" type="password" id="su-pass" placeholder="At least 6 characters"></div>
+    <div class="fg"><label class="flbl">Your Trade</label>
+      <select class="fsel" id="su-trade">
+        <option value="">Select your trade...</option>
+        <option>Auto Detailing</option><option>Pressure Washing</option><option>Window Cleaning</option>
+        <option>Lawn Care</option><option>HVAC</option><option>Plumbing</option>
+        <option>Electrical</option><option>Painting</option><option>Roofing</option>
+        <option>Landscaping</option><option>General Home Services</option><option>Other</option>
+      </select>
+    </div>
+    <div class="fg"><label class="flbl">City / Location</label><input class="finp" type="text" id="su-city" placeholder="Salt Lake City, UT"></div>
+    <button class="bauth" id="signup-btn" onclick="signUp()">Create Account →</button>
+  </div>
+  <div style="margin-top:14px;text-align:center;font-size:11px;color:var(--t3)">By continuing you agree to our Terms &amp; Privacy Policy</div>
+</div></div>
 </div>
 
-<!-- MAIN APP -->
 <div id="app" style="display:none">
-  <nav class="nav">
-    <div class="nlogo" onclick="go('jobs')">brnno<span>pro</span></div>
-    <div class="ntabs">
-      <button class="ntab active" onclick="go('jobs')">🏆 Job Board</button>
-      <button class="ntab" onclick="go('marketplace')">🔧 Equipment</button>
-      <button class="ntab" onclick="go('post')">+ Post</button>
-      <button class="ntab" onclick="go('dashboard')">My Dashboard</button>
-    </div>
-    <div class="nright">
-      <button class="nbtn" onclick="go('post')">+ Post Job</button>
-      <div class="pdrop">
-        <div class="nav-av" id="nav-av" onclick="toggleMenu()">?</div>
-        <div class="pmenu" id="pmenu">
-          <div class="pmi" id="mn-nm" style="font-weight:700;pointer-events:none;font-size:11px;color:var(--t2)"></div>
-          <div class="pmi" id="mn-tr" style="pointer-events:none;font-size:10px;color:var(--t3)"></div>
-          <div class="psep"></div>
-          <div class="pmi" onclick="go('dashboard')">My Dashboard</div>
-          <div class="pmi" onclick="go('post')">Post a Job / Listing</div>
-          <div class="psep"></div>
-          <div class="pmi red" onclick="signOut()">Sign Out</div>
-        </div>
-      </div>
-    </div>
-  </nav>
-
-  <!-- JOB BOARD (MAIN PAGE) -->
-  <div class="page active" id="pg-jobs">
-    <div class="hero">
-      <div class="hero-title">Find work. <span>Hire pros.</span><br>Grow your business.</div>
-      <div class="hero-sub">The job board where home service pros post jobs, place bids, and get hired — faster.</div>
-      <div class="hero-btns">
-        <button class="hero-btn-pri" onclick="go('post')">Post a Job</button>
-        <button class="hero-btn-sec" onclick="document.getElementById('jobs-list').scrollIntoView({behavior:'smooth'})">Browse Jobs ↓</button>
-      </div>
-      <div class="hero-stats">
-        <div class="hero-stat"><div class="hero-stat-num" id="stat-jobs">0</div><div class="hero-stat-lbl">Open Jobs</div></div>
-        <div class="hero-stat"><div class="hero-stat-num" id="stat-bids">0</div><div class="hero-stat-lbl">Bids Placed</div></div>
-        <div class="hero-stat"><div class="hero-stat-num" id="stat-pros">0</div><div class="hero-stat-lbl">Active Pros</div></div>
-      </div>
-    </div>
-    <div class="inner">
-      <div class="fbar">
-        <span class="flb">Service</span>
-        <button class="chip on" onclick="jflt('all',this)">All Jobs</button>
-        <button class="chip" onclick="jflt('detailing',this)">Auto Detailing</button>
-        <button class="chip" onclick="jflt('pressure',this)">Pressure Washing</button>
-        <button class="chip" onclick="jflt('lawn',this)">Lawn Care</button>
-        <button class="chip" onclick="jflt('window',this)">Windows</button>
-        <button class="chip" onclick="jflt('hvac',this)">HVAC</button>
-        <button class="chip" onclick="jflt('cleaning',this)">Cleaning</button>
-        <div class="vsep"></div>
-        <button class="chip cg" onclick="sortJobs('pay',this)">Top Pay</button>
-        <input class="sinp" placeholder="Search jobs..." oninput="jsrch(this.value)">
-      </div>
-      <div class="shdr">
-        <div class="stitle" id="jcount">Loading jobs...</div>
-        <button class="nbtn" onclick="go('post')">+ Post a Job</button>
-      </div>
-      <div class="jgrid" id="jobs-list"><div class="loading"><div class="spin"></div>Loading open jobs...</div></div>
-    </div>
+<nav class="nav">
+  <div class="nlogo" onclick="goPage('jobs')">brnno<span>pro</span></div>
+  <div class="ntabs">
+    <button class="ntab active" onclick="goPage('jobs')">🔨 Job Board</button>
+    <button class="ntab" onclick="goPage('post-job')">+ Post a Job</button>
+    <button class="ntab" onclick="goPage('dashboard')">My Dashboard</button>
   </div>
-
-  <!-- EQUIPMENT MARKETPLACE -->
-  <div class="page" id="pg-marketplace">
-    <div class="inner">
-      <div class="shdr">
-        <div>
-          <div class="stitle">Equipment Marketplace</div>
-          <div style="font-size:12px;color:var(--t2);margin-top:2px">Rent or buy tools and equipment from other pros</div>
-        </div>
-        <button class="nbtn" onclick="go('post')">+ List Equipment</button>
-      </div>
-      <div class="fbar">
-        <span class="flb">Type</span>
-        <button class="chip on" onclick="lflt('all',this)">All</button>
-        <button class="chip" onclick="lflt('rent',this)">For Rent</button>
-        <button class="chip" onclick="lflt('sell',this)">For Sale</button>
-        <div class="vsep"></div>
-        <button class="chip" onclick="lflt('equipment',this)">Equipment</button>
-        <button class="chip" onclick="lflt('tools',this)">Tools</button>
-        <button class="chip" onclick="lflt('chemicals',this)">Chemicals</button>
-        <button class="chip" onclick="lflt('trailer',this)">Trailers</button>
-        <input class="sinp" placeholder="Search equipment..." oninput="lsrch(this.value)">
-      </div>
-      <div class="shdr"><div class="stitle" id="lcount">Loading...</div></div>
-      <div class="lgrid" id="lgrid"><div class="loading"><div class="spin"></div>Loading listings...</div></div>
-    </div>
-  </div>
-
-  <!-- POST PAGE -->
-  <div class="page" id="pg-post">
-    <div class="inner pwrap">
-      <div class="pcard">
-        <div class="ptitle">Post a Listing</div>
-        <div class="psub">Post a job for other pros to bid on, or list equipment to rent or sell.</div>
-        <div class="post-type-grid">
-          <div class="post-type-opt sel-job" id="pt-job" onclick="setPT('job')">
-            <div class="post-type-icon">📋</div>
-            <div class="post-type-lbl">Post a Job</div>
-            <div class="post-type-desc">Get bids from qualified pros</div>
-          </div>
-          <div class="post-type-opt" id="pt-eq" onclick="setPT('eq')">
-            <div class="post-type-icon">🔧</div>
-            <div class="post-type-lbl">List Equipment</div>
-            <div class="post-type-desc">Rent out or sell gear</div>
-          </div>
-        </div>
-        <div class="fee-strip">💰 Brnno takes an <strong>8% platform fee</strong> on completed jobs. You keep 92%.</div>
-
-        <!-- JOB FIELDS -->
-        <div id="job-fields">
-          <div class="prow"><label class="plbl">Job Title</label><input class="pinp" id="p-ti" placeholder="e.g. Full Detail — 3 Cars, Residential Driveway, Saturday"></div>
-          <div class="prow"><label class="plbl">Service Type</label>
-            <select class="psel" id="p-svc">
-              <option value="detailing">Auto Detailing</option>
-              <option value="pressure washing">Pressure Washing</option>
-              <option value="lawn care">Lawn Care</option>
-              <option value="window cleaning">Window Cleaning</option>
-              <option value="hvac">HVAC</option>
-              <option value="plumbing">Plumbing</option>
-              <option value="electrical">Electrical</option>
-              <option value="painting">Painting</option>
-              <option value="cleaning">Cleaning Services</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <div class="prow"><label class="plbl">Job Description</label><textarea class="pta" id="p-de" placeholder="Describe the job in detail — what needs to be done, how many units, any special requirements, what supplies are needed..."></textarea></div>
-          <div class="tcol">
-            <div class="prow"><label class="plbl">Your Budget ($)</label><input class="pinp" id="p-pr" type="number" min="1" placeholder="e.g. 250"></div>
-            <div class="prow"><label class="plbl">Job Deadline / Date</label><input class="pinp" id="p-dl" type="text" placeholder="e.g. Saturday Apr 19"></div>
-          </div>
-          <div class="tcol">
-            <div class="prow"><label class="plbl">City / Location</label><input class="pinp" id="p-ci" placeholder="e.g. Salt Lake City, UT"></div>
-            <div class="prow"><label class="plbl">Est. Duration</label><input class="pinp" id="p-dur" placeholder="e.g. 4 hours, Full day"></div>
-          </div>
-        </div>
-
-        <!-- EQUIPMENT FIELDS -->
-        <div id="eq-fields" style="display:none">
-          <div class="prow"><label class="plbl">Item Title</label><input class="pinp" id="eq-ti" placeholder="e.g. Flex Orbital Polisher DA8 — Excellent Condition"></div>
-          <div class="prow"><label class="plbl">Description</label><textarea class="pta" id="eq-de" placeholder="Describe condition, what's included, availability..."></textarea></div>
-          <div class="tcol">
-            <div class="prow"><label class="plbl" id="eq-prlbl">Rental Price ($)</label><input class="pinp" id="eq-pr" type="number" min="1" placeholder="e.g. 45"></div>
-            <div class="prow" id="eq-perw"><label class="plbl">Per</label>
-              <select class="psel" id="eq-pe"><option value="day">Day</option><option value="weekend">Weekend</option><option value="week">Week</option></select>
-            </div>
-          </div>
-          <div class="tcol">
-            <div class="prow"><label class="plbl">Category</label>
-              <select class="psel" id="eq-ca">
-                <option value="equipment">Equipment / Machines</option><option value="tools">Hand Tools</option>
-                <option value="chemicals">Chemicals / Products</option><option value="trailer">Trailers / Vehicles</option><option value="other">Other</option>
-              </select>
-            </div>
-            <div class="prow"><label class="plbl">Rent or Sell?</label>
-              <select class="psel" id="eq-type" onchange="document.getElementById('eq-perw').style.display=this.value==='rent'?'':'none';document.getElementById('eq-prlbl').textContent=this.value==='rent'?'Rental Price ($)':'Asking Price ($)'">
-                <option value="rent">Rent Out</option><option value="sell">For Sale</option>
-              </select>
-            </div>
-          </div>
-          <div class="prow"><label class="plbl">City / Location</label><input class="pinp" id="eq-ci" placeholder="e.g. Salt Lake City, UT"></div>
-        </div>
-
-        <button class="btn-post" id="pbtn" onclick="postListing()">🚀 Publish →</button>
+  <div class="nright">
+    <button class="nbtn" onclick="goPage('post-job')">+ Post Job</button>
+    <div class="pdrop">
+      <div class="nav-av" id="nav-av" onclick="toggleMenu()">?</div>
+      <div class="pmenu" id="pmenu">
+        <div class="pmi" id="menu-name" style="font-weight:700;pointer-events:none;color:var(--t2);font-size:11px"></div>
+        <div class="psep"></div>
+        <div class="pmi" onclick="goPage('dashboard')">My Dashboard</div>
+        <div class="pmi" onclick="goPage('post-job')">Post a Job</div>
+        <div class="psep"></div>
+        <div class="pmi danger" onclick="signOut()">Sign Out</div>
       </div>
     </div>
   </div>
+</nav>
 
-  <!-- DASHBOARD -->
-  <div class="page" id="pg-dashboard">
-    <div class="inner">
-      <div class="shdr" style="margin-bottom:18px">
-        <div class="stitle" id="d-welcome">My Dashboard</div>
-        <button class="nbtn" onclick="go('post')">+ Post Job</button>
-      </div>
-      <div class="dstats">
-        <div class="dcard"><div class="dlbl">Jobs Posted</div><div class="dval" id="d-posted">0</div></div>
-        <div class="dcard"><div class="dlbl">Bids Placed</div><div class="dval" id="d-bids">0</div></div>
-        <div class="dcard"><div class="dlbl">Jobs Won</div><div class="dval" id="d-won">0</div></div>
-        <div class="dcard"><div class="dlbl">Rating</div><div class="dval" id="d-rat">—</div></div>
-      </div>
-      <div class="shdr"><div class="stitle">My Jobs</div></div>
-      <div class="jgrid" id="my-jobs"><div class="loading"><div class="spin"></div>Loading...</div></div>
-      <div class="shdr" style="margin-top:24px"><div class="stitle">My Bids</div></div>
-      <div id="my-bids"><div class="loading"><div class="spin"></div>Loading...</div></div>
-      <div class="shdr" style="margin-top:24px"><div class="stitle">My Equipment Listings</div></div>
-      <div class="lgrid" id="my-listings"><div class="loading"><div class="spin"></div>Loading...</div></div>
+<div class="page active" id="pg-jobs">
+  <div style="background:var(--tx);padding:36px 20px;text-align:center">
+    <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#fff;margin-bottom:6px">Find Your Next <span style="color:var(--gold)">Gig</span></div>
+    <div style="font-size:14px;color:rgba(255,255,255,.6)">Home service pros helping each other. Post a job, place a bid, get paid.</div>
+  </div>
+  <div class="inner">
+    <div class="fbar">
+      <span class="flb">Service</span>
+      <button class="chip on" onclick="jflt('all',this)">All Jobs</button>
+      <button class="chip" onclick="jflt('detailing',this)">Detailing</button>
+      <button class="chip" onclick="jflt('pressure',this)">Pressure Wash</button>
+      <button class="chip" onclick="jflt('lawn',this)">Lawn Care</button>
+      <button class="chip" onclick="jflt('window',this)">Windows</button>
+      <button class="chip" onclick="jflt('cleaning',this)">Cleaning</button>
+      <div class="vsep"></div>
+      <button class="chip on" id="sort-new" onclick="setSort('new',this)">Newest</button>
+      <button class="chip" id="sort-pay" onclick="setSort('pay',this)">Highest Pay</button>
+      <input class="sinp" placeholder="Search jobs..." oninput="searchJobs(this.value)">
     </div>
+    <div class="shdr">
+      <div class="stitle" id="job-count">Loading jobs...</div>
+      <button class="nbtn" onclick="goPage('post-job')">+ Post a Job</button>
+    </div>
+    <div id="jobs-list"><div class="loading"><div class="spin"></div>Loading...</div></div>
   </div>
 </div>
 
-<!-- MODAL -->
-<div class="ovl" id="ovl" onclick="maybeClose(event)"><div class="modal" id="min"></div></div>
-<div class="toast" id="tst"></div>
+<div class="page" id="pg-post-job">
+  <div class="inner pwrap"><div class="pcard">
+    <div class="ptitle">Post a Job</div>
+    <div class="psub">Tell other pros what you need done. They bid, you pick the best one.</div>
+    <div class="feestrip">💰 <strong>Brnno takes 8%</strong> when the job is completed. Free to post — only pay when it's done.</div>
+    <div class="prow"><label class="plbl">Job Title *</label><input class="pinp" id="j-title" placeholder="e.g. Need help with a full detail job Saturday — 3 cars"></div>
+    <div class="prow"><label class="plbl">Service Type *</label>
+      <select class="psel" id="j-service">
+        <option value="">Select service type...</option>
+        <option value="detailing">Auto Detailing</option>
+        <option value="pressure washing">Pressure Washing</option>
+        <option value="window cleaning">Window Cleaning</option>
+        <option value="lawn care">Lawn Care</option>
+        <option value="cleaning">House / Commercial Cleaning</option>
+        <option value="hvac">HVAC</option>
+        <option value="plumbing">Plumbing</option>
+        <option value="electrical">Electrical</option>
+        <option value="painting">Painting</option>
+        <option value="roofing">Roofing</option>
+        <option value="landscaping">Landscaping</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="prow"><label class="plbl">Job Description *</label>
+      <textarea class="pta" id="j-desc" placeholder="What needs to be done? What supplies/equipment should they bring? Any experience required? Estimated hours?"></textarea>
+    </div>
+    <div class="tcol">
+      <div class="prow"><label class="plbl">Your Budget ($) *</label><input class="pinp" id="j-budget" type="number" min="1" placeholder="e.g. 250"></div>
+      <div class="prow"><label class="plbl">City / Location *</label><input class="pinp" id="j-city" placeholder="e.g. Salt Lake City, UT"></div>
+    </div>
+    <div class="tcol">
+      <div class="prow"><label class="plbl">Date Needed</label><input class="pinp" id="j-date" type="date"></div>
+      <div class="prow"><label class="plbl">Job Type</label>
+        <select class="psel" id="j-type">
+          <option value="one-time">One-Time</option>
+          <option value="recurring">Recurring / Ongoing</option>
+          <option value="contract">Contract</option>
+        </select>
+      </div>
+    </div>
+    <button class="psub-btn" id="post-job-btn" onclick="submitJob()">Post This Job →</button>
+  </div></div>
+</div>
+
+<div class="page" id="pg-dashboard">
+  <div class="inner">
+    <div class="shdr" style="margin-bottom:18px">
+      <div class="stitle" id="dash-name">My Dashboard</div>
+      <button class="nbtn" onclick="goPage('post-job')">+ Post a Job</button>
+    </div>
+    <div class="dstats">
+      <div class="dcard"><div class="dlbl">Jobs Posted</div><div class="dval" id="d-posted">0</div></div>
+      <div class="dcard"><div class="dlbl">Bids Placed</div><div class="dval" id="d-bids">0</div></div>
+      <div class="dcard"><div class="dlbl">Jobs Won</div><div class="dval" id="d-won">0</div></div>
+      <div class="dcard"><div class="dlbl">Rating</div><div class="dval" id="d-rating">—</div></div>
+    </div>
+    <div class="shdr"><div class="stitle">Jobs I Posted</div></div>
+    <div id="my-jobs"><div class="loading"><div class="spin"></div></div></div>
+    <div class="shdr" style="margin-top:24px"><div class="stitle">My Bids</div></div>
+    <div id="my-bids"><div class="loading"><div class="spin"></div></div></div>
+  </div>
+</div>
+</div>
+
+<div class="ovl" id="modal-ovl" onclick="maybeCloseModal(event)"><div class="modal" id="modal-inner"></div></div>
+<div class="toast" id="toast-el"></div>
 
 <script>
-const SB='https://fdpjqwywzpltxkqqbggc.supabase.co';
-const SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkcGpxd3l3enBsdHhrcXFiZ2djIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4OTE5MDYsImV4cCI6MjA2MTQ2NzkwNn0.tOEpMoh3QQHJniK0b0JpGV8tOJq4IWXAIEi_hFEUMEU';
-const db=supabase.createClient(SB,SK);
-const EM={equipment:'🔧',tools:'⚙️',chemicals:'🧪',trailer:'🚗',other:'📦'};
-const SVC_ICON={detailing:'🚗','pressure washing':'💧','pressure':'💧','lawn care':'🌿','lawn':'🌿','window cleaning':'🪟','window':'🪟',hvac:'🌡️',plumbing:'🔩',electrical:'⚡',painting:'🖌️',cleaning:'🧹',other:'📋'};
+const SB_URL='https://fdpjqwywzpltxkqqbggc.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkcGpxd3l3enBsdHhrcXFiZ2djIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4OTE5MDYsImV4cCI6MjA2MTQ2NzkwNn0.tOEpMoh3QQHJniK0b0JpGV8tOJq4IWXAIEi_hFEUMEU';
+const {createClient}=supabase;
+const db=createClient(SB_URL,SB_KEY);
+const ICONS={detailing:'🚗','pressure washing':'💧','lawn care':'🌿','window cleaning':'🪟',cleaning:'🧹',hvac:'🌡️',plumbing:'🔩',electrical:'⚡',painting:'🖌️',roofing:'🏠',landscaping:'🌳',other:'📋'};
+let user=null,profile=null,allJobs=[],jobFilter={cat:'all',q:'',sort:'new'};
 
-let user=null,profile=null,allJobs=[],allListings=[],JF={cat:'all',q:'',sort:'newest'},LF={type:'all',cat:'all',q:''},PT='job';
-
-// ── AUTH ──
-function switchTab(t){
-  document.getElementById('f-in').style.display=t==='in'?'':'none';
-  document.getElementById('f-up').style.display=t==='up'?'':'none';
-  document.getElementById('t-in').className='atab'+(t==='in'?' active':'');
-  document.getElementById('t-up').className='atab'+(t==='up'?' active':'');
-  hideAuthMsg();
+function showAuthTab(t){
+  document.getElementById('signin-form').style.display=t==='signin'?'':'none';
+  document.getElementById('signup-form').style.display=t==='signup'?'':'none';
+  document.getElementById('tab-signin').className='atab'+(t==='signin'?' active':'');
+  document.getElementById('tab-signup').className='atab'+(t==='signup'?' active':'');
+  document.getElementById('auth-err').style.display='none';
 }
-function showAuthErr(m){const e=document.getElementById('aerr');e.textContent=m;e.style.display='block';document.getElementById('asucc').style.display='none';}
-function showAuthOk(m){const e=document.getElementById('asucc');e.textContent=m;e.style.display='block';document.getElementById('aerr').style.display='none';}
-function hideAuthMsg(){document.getElementById('aerr').style.display='none';document.getElementById('asucc').style.display='none';}
+function showAuthErr(m){const e=document.getElementById('auth-err');e.textContent=m;e.style.display='block';}
 
 async function signIn(){
-  const em=document.getElementById('si-em').value.trim(),pw=document.getElementById('si-pw').value;
-  if(!em||!pw)return showAuthErr('Please enter your email and password.');
-  const btn=document.getElementById('si-btn');btn.disabled=true;btn.textContent='Signing in...';
-  const{data,error}=await db.auth.signInWithPassword({email:em,password:pw});
+  const email=document.getElementById('si-email').value.trim();
+  const pass=document.getElementById('si-pass').value;
+  if(!email||!pass)return showAuthErr('Please enter your email and password.');
+  const btn=document.getElementById('signin-btn');
+  btn.disabled=true;btn.textContent='Signing in...';
+  const{data,error}=await db.auth.signInWithPassword({email,password:pass});
   btn.disabled=false;btn.textContent='Sign In →';
   if(error)return showAuthErr(error.message);
-  await boot(data.user);
+  await initApp(data.user);
 }
 
 async function signUp(){
-  const nm=document.getElementById('su-nm').value.trim(),
-    em=document.getElementById('su-em').value.trim(),
-    pw=document.getElementById('su-pw').value,
-    tr=document.getElementById('su-tr').value,
-    ct=document.getElementById('su-ct').value.trim();
-  if(!nm)return showAuthErr('Please enter your full name.');
-  if(!em)return showAuthErr('Please enter your email.');
-  if(!pw||pw.length<6)return showAuthErr('Password must be at least 6 characters.');
-  if(!tr)return showAuthErr('Please select your trade.');
-  const btn=document.getElementById('su-btn');btn.disabled=true;btn.textContent='Creating account...';
-  const{data,error}=await db.auth.signUp({email:em,password:pw,options:{data:{full_name:nm}}});
+  const name=document.getElementById('su-name').value.trim();
+  const email=document.getElementById('su-email').value.trim();
+  const pass=document.getElementById('su-pass').value;
+  const trade=document.getElementById('su-trade').value;
+  const city=document.getElementById('su-city').value.trim();
+  if(!name)return showAuthErr('Please enter your full name.');
+  if(!email)return showAuthErr('Please enter your email.');
+  if(!pass||pass.length<6)return showAuthErr('Password must be at least 6 characters.');
+  if(!trade)return showAuthErr('Please select your trade.');
+  const btn=document.getElementById('signup-btn');
+  btn.disabled=true;btn.textContent='Creating account...';
+  const{data,error}=await db.auth.signUp({email,password:pass});
   if(error){btn.disabled=false;btn.textContent='Create Account →';return showAuthErr(error.message);}
-  // Save profile
-  const{error:pe}=await db.from('pro_profiles').upsert({id:data.user.id,email:em,full_name:nm,trade:tr,city:ct||null,rating:null,completed_jobs:0,total_earned:0});
+  await db.from('pro_profiles').upsert({id:data.user.id,email,full_name:name,trade,city,rating:null,completed_jobs:0,total_earned:0,review_count:0});
   btn.disabled=false;btn.textContent='Create Account →';
-  if(pe){console.error('Profile error:',pe);} // non-fatal
-  if(data.session){await boot(data.user);}
-  else{showAuthOk('Account created! Check your email to confirm, then sign in.');}
+  await initApp(data.user);
 }
 
-async function boot(u){
+async function initApp(u){
   user=u;
-  const{data:p}=await db.from('pro_profiles').select('*').eq('id',u.id).maybeSingle();
+  const{data:p}=await db.from('pro_profiles').select('*').eq('id',u.id).single();
   profile=p;
-  const ini=(p?.full_name||u.email||'?').split(' ').map(w=>w[0]).join('').toUpperCase().substring(0,2);
+  const ini=(p?.full_name||u.email).split(' ').map(w=>w[0]).join('').toUpperCase().substring(0,2);
   document.getElementById('nav-av').textContent=ini;
-  document.getElementById('mn-nm').textContent=p?.full_name||u.email;
-  document.getElementById('mn-tr').textContent=p?.trade||'';
-  document.getElementById('d-welcome').textContent='Welcome back, '+(p?.full_name?.split(' ')[0]||'Pro')+'!';
-  if(p){
-    document.getElementById('d-rat').textContent=p.rating?p.rating.toFixed(1)+' ⭐':'New';
-  }
+  document.getElementById('menu-name').textContent=p?.full_name||u.email;
+  document.getElementById('dash-name').textContent='Welcome, '+(p?.full_name?.split(' ')[0]||'Pro')+'!';
+  if(p){document.getElementById('d-rating').textContent=p.rating?p.rating.toFixed(1)+' ⭐':'—';}
   document.getElementById('auth-page').style.display='none';
   document.getElementById('app').style.display='block';
-  await loadAll();
+  await loadJobs();
 }
 
 async function signOut(){
   await db.auth.signOut();
-  user=null;profile=null;allJobs=[];allListings=[];
+  user=null;profile=null;
   document.getElementById('app').style.display='none';
   document.getElementById('auth-page').style.display='block';
   toggleMenu(true);
 }
 
-function toggleMenu(fc){const m=document.getElementById('pmenu');if(fc)m.classList.remove('open');else m.classList.toggle('open');}
+function toggleMenu(f){const m=document.getElementById('pmenu');if(f===true)m.classList.remove('open');else m.classList.toggle('open');}
 document.addEventListener('click',e=>{if(!e.target.closest('.pdrop'))toggleMenu(true);});
 
-// ── ROUTING ──
-function go(p){
-  document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));
-  document.querySelectorAll('.ntab').forEach(e=>e.classList.remove('active'));
+function goPage(p){
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.ntab').forEach(el=>el.classList.remove('active'));
   document.getElementById('pg-'+p)?.classList.add('active');
-  const idx={jobs:0,marketplace:1,post:2,dashboard:3}[p];
+  const idx={jobs:0,'post-job':1,dashboard:2}[p];
   if(idx!==undefined)document.querySelectorAll('.ntab')[idx]?.classList.add('active');
   toggleMenu(true);
   if(p==='dashboard')loadDash();
-  if(p==='jobs')renderJobs();
-  if(p==='marketplace')renderListings();
 }
 
-// ── LOAD DATA ──
-async function loadAll(){
-  const[jr,lr,br,pr]=await Promise.all([
-    db.from('pro_jobs').select('*,pro_profiles(full_name,rating,trade),pro_bids(count)').eq('status','open').order('created_at',{ascending:false}),
-    db.from('pro_listings').select('*,pro_profiles(full_name,rating)').eq('status','active').order('created_at',{ascending:false}),
-    db.from('pro_bids').select('id',{count:'exact',head:true}),
-    db.from('pro_profiles').select('id',{count:'exact',head:true})
-  ]);
-  allJobs=jr.data||[];allListings=lr.data||[];
-  // Update hero stats
-  const el=id=>document.getElementById(id);
-  if(el('stat-jobs'))el('stat-jobs').textContent=allJobs.length;
-  if(el('stat-bids'))el('stat-bids').textContent=br.count||0;
-  if(el('stat-pros'))el('stat-pros').textContent=pr.count||0;
-  renderJobs();renderListings();
+async function loadJobs(){
+  const{data}=await db.from('pro_jobs')
+    .select('*,pro_profiles(full_name,rating,trade),pro_bids(count)')
+    .in('status',['open','in_progress'])
+    .order('created_at',{ascending:false});
+  allJobs=data||[];
+  renderJobs();
 }
 
-// ── JOB BOARD ──
-function getJobs(){
-  let j=[...allJobs];
-  if(JF.cat!=='all')j=j.filter(x=>(x.service_type||'').toLowerCase().includes(JF.cat));
-  if(JF.q){const q=JF.q.toLowerCase();j=j.filter(x=>x.title?.toLowerCase().includes(q)||x.description?.toLowerCase().includes(q));}
-  if(JF.sort==='pay')j.sort((a,b)=>b.budget-a.budget);
-  return j;
+function getFiltered(){
+  let jobs=[...allJobs];
+  if(jobFilter.cat!=='all')jobs=jobs.filter(j=>(j.service_type||'').toLowerCase().includes(jobFilter.cat));
+  if(jobFilter.q){const q=jobFilter.q.toLowerCase();jobs=jobs.filter(j=>j.title?.toLowerCase().includes(q)||j.description?.toLowerCase().includes(q)||j.city?.toLowerCase().includes(q));}
+  if(jobFilter.sort==='pay')jobs.sort((a,b)=>b.budget-a.budget);
+  return jobs;
 }
 
 function renderJobs(){
-  const items=getJobs();
-  const el=document.getElementById('jcount');
-  if(el)el.textContent=items.length+' Open Job'+(items.length!==1?'s':'');
-  const list=document.getElementById('jobs-list');if(!list)return;
-  if(!items.length){list.innerHTML='<div class="empty"><div class="eicon">📋</div><div class="emsg">No jobs posted yet. Be the first!</div><button class="btn-bid" onclick="go('post')" style="background:var(--gold);color:#fff;border:none;padding:10px 24px;border-radius:var(--r);font-size:13px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif">Post a Job →</button></div>';return;}
-  list.innerHTML=items.map(j=>jobCard(j)).join('');
-}
-
-function jobCard(j){
-  const bc=j.pro_bids?.[0]?.count||0;
-  const svc=(j.service_type||'other').toLowerCase();
-  const icon=SVC_ICON[svc]||SVC_ICON[Object.keys(SVC_ICON).find(k=>svc.includes(k))||'other']||'📋';
-  const iconCls=svc.includes('detail')?'detailing':svc.includes('pressure')?'pressure':svc.includes('lawn')?'lawn':svc.includes('window')?'window':svc.includes('hvac')?'hvac':'other';
-  const isUrgent=j.deadline&&(new Date(j.deadline)-new Date())<86400000*3;
-  const isOwn=j.user_id===user?.id;
-  const poster=j.pro_profiles;
-  return `<div class="jcard ${j.featured?'featured':''}" onclick="openJob('${j.id}')">
-    <div class="jicon ${iconCls}">${icon}</div>
-    <div class="jmain">
-      ${isUrgent?'<span class="jbadge urgent">🔥 Urgent</span>':bc>3?'<span class="jbadge featured">🔥 In Demand</span>':'<span class="jbadge open">Open</span>'}
-      <div class="jtitle">${j.title}</div>
-      <div class="jdesc">${j.description||''}</div>
-      ${j.tags?.length?'<div class="jtags">'+j.tags.map(t=>`<span class="jtag">${t}</span>`).join('')+'</div>':''}
-      <div class="jmeta">
-        <div class="jpay">$${Number(j.budget).toLocaleString()}<span class="jpay-note">budget</span></div>
-        <div class="jstat">🤝 ${bc} bid${bc!==1?'s':''}</div>
-        ${j.deadline?'<div class="jstat">📅 '+j.deadline+'</div>':''}
-        ${j.city?'<div class="jstat">📍 '+j.city+'</div>':''}
-        <div class="jstat">by ${poster?.full_name||'Pro'}</div>
-      </div>
-    </div>
-    <div class="jside">
-      <span class="bpill">${bc} bid${bc!==1?'s':''}</span>
-      ${!isOwn?'<button class="btn-bid" onclick="event.stopPropagation();openJob(''+j.id+'')">Place Bid →</button>':'<button class="btn-sec" onclick="event.stopPropagation()">Your Job</button>'}
-    </div>
-  </div>`;}
-
-function jflt(c,el){JF.cat=c;document.querySelectorAll('#pg-jobs .chip').forEach(x=>x.classList.remove('on'));el.classList.add('on');renderJobs();}
-function sortJobs(s,el){JF.sort=JF.sort===s?'newest':s;el.classList.toggle('on',JF.sort===s);renderJobs();}
-function jsrch(q){JF.q=q;renderJobs();}
-
-// ── OPEN JOB MODAL ──
-async function openJob(id){
-  const j=allJobs.find(x=>x.id===id);if(!j)return;
-  const svc=(j.service_type||'other').toLowerCase();
-  const icon=SVC_ICON[svc]||SVC_ICON[Object.keys(SVC_ICON).find(k=>svc.includes(k))||'other']||'📋';
-  const poster=j.pro_profiles;
-  const ini=(poster?.full_name||'?').split(' ').map(w=>w[0]).join('').toUpperCase().substring(0,2);
-  const isOwn=j.user_id===user?.id;
-
-  const{data:bids}=await db.from('pro_bids').select('*,pro_profiles(full_name,rating,trade)').eq('job_id',id).neq('status','rejected').order('amount',{ascending:true});
-
-  const bHTML=(bids||[]).map(b=>{
-    const bi=(b.pro_profiles?.full_name||'?').split(' ').map(w=>w[0]).join('').toUpperCase().substring(0,2);
-    const isMyBid=b.user_id===user?.id;
-    return `<div class="bid-item ${b.status==='accepted'?'style="background:var(--grbg);border-radius:var(--r);padding:10px"':''}">
-      <div class="bid-av">${bi}</div>
-      <div class="bid-info">
-        <div class="bid-name">${b.pro_profiles?.full_name||'Pro'}${b.pro_profiles?.trade?' · '+b.pro_profiles.trade:''}${b.pro_profiles?.rating?' ★'+Number(b.pro_profiles.rating).toFixed(1):''}</div>
-        <div class="bid-note-txt">${b.note||'No message provided'}</div>
-        ${b.status==='accepted'?'<div style="color:var(--grn);font-size:11px;font-weight:700;margin-top:2px">✅ ACCEPTED</div>':''}
-        ${isMyBid?'<div style="color:var(--blue);font-size:11px;margin-top:2px">← Your bid</div>':''}
-      </div>
-      <div class="bid-amount">$${Number(b.amount).toLocaleString()}</div>
-      ${isOwn&&b.status==='pending'?'<button class="btn-accept" onclick="acceptBid(''+b.id+'',''+j.id+'','+b.amount+',''+b.user_id+'',''+( b.pro_profiles?.full_name||'Pro')+'')">Accept</button>':''}
-    </div>`;
-  }).join('')||'<div style="color:var(--t3);font-size:13px;padding:10px 0;text-align:center">No bids yet — be the first to bid!</div>';
-
-  document.getElementById('min').innerHTML=`
-    <div class="mhdr">
-      <div style="display:flex;align-items:center;gap:10px">
-        <span style="font-size:24px">${icon}</span>
-        <div class="mhtitle" style="font-size:15px">${j.title}</div>
-      </div>
-      <button class="mx" onclick="closeM()">✕</button>
-    </div>
-    <div class="mbody">
-      <div class="mprice">$${Number(j.budget).toLocaleString()} <span style="font-size:14px;font-weight:400;color:var(--t2)">budget</span></div>
-      <div class="msub">📍 ${j.city||'Location TBD'} · 📅 ${j.deadline||'Flexible'} · ⏱️ ${j.duration||'TBD'}</div>
-
-      <div class="msec"><div class="mlbl">Job Description</div><div class="mval">${j.description||'No description provided.'}</div></div>
-      ${j.tags?.length?'<div class="msec"><div class="mlbl">Skills / Tags</div><div class="jtags" style="margin-top:4px">'+j.tags.map(t=>'<span class="jtag">'+t+'</span>').join('')+'</div></div>':''}
-
-      <div class="poster-strip">
-        <div class="poster-av">${ini}</div>
-        <div style="flex:1">
-          <div class="poster-name">${poster?.full_name||'Client'}</div>
-          <div class="poster-stat">${poster?.trade||'Home Service Pro'}${poster?.rating?' · ★'+Number(poster.rating).toFixed(1):''}</div>
+  const jobs=getFiltered();
+  document.getElementById('job-count').textContent=jobs.length+' Open Job'+(jobs.length!==1?'s':'');
+  const el=document.getElementById('jobs-list');
+  if(!jobs.length){el.innerHTML='<div class="empty"><div class="eicon">📋</div><div class="emsg">No jobs yet — be the first to post one!</div><button class="bbid" onclick="goPage('post-job')">Post a Job</button></div>';return;}
+  el.innerHTML=jobs.map(j=>{
+    const bc=j.pro_bids?.[0]?.count||0;
+    const icon=ICONS[j.service_type?.toLowerCase()]||'📋';
+    const isOwn=j.user_id===user?.id;
+    const statusBadge=j.status==='in_progress'?'<span class="sbadge s-prog" style="margin-left:8px;font-size:10px">In Progress</span>':'';
+    return `<div class="jcard" onclick="openJob('${j.id}')">
+      <div class="jicon">${icon}</div>
+      <div class="jmain">
+        <div class="jtitle">${j.title}${statusBadge}</div>
+        <div class="jdesc">${j.description||''}</div>
+        ${j.tags?.length?`<div class="tags">${j.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''}
+        <div class="jmeta">
+          <div class="jpay">$${Number(j.budget).toLocaleString()}</div>
+          <div class="jstat">${bc} bid${bc!==1?'s':''}</div>
+          ${j.deadline?`<div class="jstat">📅 ${j.deadline}</div>`:''}
+          <div class="jstat">📍 ${j.city||''}</div>
+          <div class="jstat">by ${j.pro_profiles?.full_name||'Pro'}</div>
         </div>
-        <div style="font-size:12px;color:var(--t2)">${(bids||[]).length} bid${(bids||[]).length!==1?'s':''} so far</div>
       </div>
-
-      ${!isOwn?'<div class="bid-box"><div class="bid-box-title">💬 Place Your Bid</div><div class="bid-row"><input class="bid-amt" type="number" id="b-amt" placeholder="$'+j.budget+'" min="1" onfocus="this.select()"><textarea class="bid-note" id="b-note" placeholder="Why should they pick you? Describe your experience, timeline, what's included in your price..."></textarea><button class="btn-submit-bid" onclick="placeBid(''+j.id+'')">Submit Bid →</button></div><div class="bid-fee-note">💡 The client reviews all bids and picks the winner. Brnno takes 8% on completion — you keep 92%.</div></div>':'<div style="background:var(--gbg);border:1px solid var(--gbdr);border-radius:var(--r);padding:12px 14px;font-size:12px;color:#7A5A0A;margin-bottom:16px">✅ This is your job posting. Accept a bid below to hire someone.</div>'}
-
-      <div class="bids-hdr">All Bids (${(bids||[]).length})</div>
-      ${bHTML}
-    </div>`;
-  document.getElementById('ovl').classList.add('open');
-}
-
-async function placeBid(jobId){
-  const amt=parseFloat(document.getElementById('b-amt')?.value);
-  const note=document.getElementById('b-note')?.value?.trim();
-  if(!amt||amt<=0)return toast('Enter a valid bid amount.');
-  if(!user)return toast('Sign in to place a bid.');
-  const btn=document.querySelector('.btn-submit-bid');if(btn){btn.disabled=true;btn.textContent='Submitting...';}
-  const{error}=await db.from('pro_bids').upsert({job_id:jobId,user_id:user.id,amount:amt,note:note||null,status:'pending'},{onConflict:'job_id,user_id'});
-  if(btn){btn.disabled=false;btn.textContent='Submit Bid →';}
-  if(error)return toast('Error: '+error.message);
-  toast('✅ Bid submitted! The client will review and contact you if selected.');
-  closeM();await loadAll();
-}
-
-async function acceptBid(bidId,jobId,amount,winnerId,winnerName){
-  await Promise.all([
-    db.from('pro_bids').update({status:'accepted'}).eq('id',bidId),
-    db.from('pro_bids').update({status:'rejected'}).eq('job_id',jobId).neq('id',bidId),
-    db.from('pro_jobs').update({status:'in_progress',accepted_bid_id:bidId}).eq('id',jobId)
-  ]);
-  toast('🎉 '+winnerName+' has been hired! They'll be notified.');
-  closeM();await loadAll();
-}
-
-// ── EQUIPMENT LISTINGS ──
-function getListing(){
-  let l=[...allListings];
-  if(LF.type==='rent')l=l.filter(x=>x.listing_type==='rent');
-  else if(LF.type==='sell')l=l.filter(x=>x.listing_type==='sell');
-  else if(['equipment','tools','chemicals','trailer'].includes(LF.type))l=l.filter(x=>x.category===LF.type);
-  if(LF.q){const q=LF.q.toLowerCase();l=l.filter(x=>x.title?.toLowerCase().includes(q)||x.description?.toLowerCase().includes(q));}
-  return l;
-}
-function renderListings(){
-  const items=getListing();
-  const el=document.getElementById('lcount');if(el)el.textContent=items.length+' Listing'+(items.length!==1?'s':'');
-  const g=document.getElementById('lgrid');if(!g)return;
-  if(!items.length){g.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="eicon">🔧</div><div class="emsg">No equipment listed yet.</div></div>';return;}
-  g.innerHTML=items.map(l=>{
-    const em=EM[l.category]||'📦';
-    const pr=l.listing_type==='sell'?'$'+Number(l.price).toLocaleString():'$'+l.price+'/'+(l.price_period||'day').charAt(0);
-    const s=l.pro_profiles,ini=(s?.full_name||'?').split(' ').map(w=>w[0]).join('').toUpperCase().substring(0,2);
-    return `<div class="lcard" onclick="openListing('${l.id}')">
-      <div class="lcimg">${l.photo_url?'<img src="'+l.photo_url+'" alt="'+l.title+'">':em}
-        <span class="lbtype ${l.listing_type==='rent'?'brent':'bsell'}">${l.listing_type==='rent'?'For Rent':'For Sale'}</span>
-        <span class="lprice">${pr}</span>
+      <div class="jside">
+        <span class="bpill">${bc} bid${bc!==1?'s':''}</span>
+        ${!isOwn&&j.status==='open'?`<button class="bbid" onclick="event.stopPropagation();openJob('${j.id}')">Bid Now →</button>`:`<button class="bout" onclick="event.stopPropagation();openJob('${j.id}')">View</button>`}
       </div>
-      <div class="lcbody"><div class="lctitle">${l.title}</div><div class="lcloc">📍 ${l.city||'TBD'} · ${l.condition||''}</div></div>
-      <div class="lcft"><div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t2)"><div class="mini-av">${ini}</div>${s?.full_name||'Unknown'}</div>${s?.rating?'<span style="font-size:11px;color:var(--gold)">★ '+Number(s.rating).toFixed(1)+'</span>':''}</div>
     </div>`;
   }).join('');
 }
-function lflt(t,el){LF.type=t;document.querySelectorAll('#pg-marketplace .chip').forEach(x=>x.classList.remove('on'));el.classList.add('on');renderListings();}
-function lsrch(q){LF.q=q;renderListings();}
 
-async function openListing(id){
-  const l=allListings.find(x=>x.id===id);if(!l)return;
-  const em=EM[l.category]||'📦';
-  const pr=l.listing_type==='sell'?'$'+Number(l.price).toLocaleString():'$'+l.price+' / '+(l.price_period||'day');
-  const s=l.pro_profiles,ini=(s?.full_name||'?').split(' ').map(w=>w[0]).join('').toUpperCase().substring(0,2);
-  const isOwn=l.user_id===user?.id;
-  document.getElementById('min').innerHTML=`
-    <div class="mhdr"><div class="mhtitle">${l.listing_type==='rent'?'Rental Listing':'For Sale'}</div><button class="mx" onclick="closeM()">✕</button></div>
-    <div class="mbody">
-      <div style="height:200px;background:var(--s2);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:72px;margin-bottom:16px;overflow:hidden">${l.photo_url?'<img src="'+l.photo_url+'" style="width:100%;height:100%;object-fit:cover">':em}</div>
-      <div class="mprice">${pr}</div>
-      <div class="msub">${l.city||''} · Condition: ${l.condition||'N/A'}</div>
-      <div class="msec"><div class="mlbl">About</div><div class="mval">${l.description||'No description.'}</div></div>
-      <div class="poster-strip"><div class="poster-av">${ini}</div><div><div class="poster-name">${s?.full_name||'Unknown'}</div><div class="poster-stat">${s?.rating?'★ '+Number(s.rating).toFixed(1)+' · ':''} Brnno Pro</div></div></div>
-      ${!isOwn?'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px"><button class="btn-sec" onclick="toast('Message feature coming soon!')">💬 Message</button><button style="background:var(--gold);color:#fff;border:none;padding:11px;border-radius:var(--r);font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif" onclick="toast('Booking request sent! Stripe payment coming soon.')">'+( l.listing_type==='rent'?'Book Now':'Buy Now')+' →</button></div><div style="font-size:10px;color:var(--t3);text-align:center">8% platform fee · Stripe escrow</div>':'<button style="width:100%;background:var(--rbg);color:var(--red);border:1px solid #F5BFBF;padding:11px;border-radius:var(--r);font-size:12px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif" onclick="delListing(''+l.id+'')">Remove Listing</button>'}
+function jflt(cat,el){jobFilter.cat=cat;document.querySelectorAll('#pg-jobs .chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');document.getElementById('sort-'+jobFilter.sort)?.classList.add('on');renderJobs();}
+function setSort(s,el){jobFilter.sort=s;document.getElementById('sort-new').classList.toggle('on',s==='new');document.getElementById('sort-pay').classList.toggle('on',s==='pay');renderJobs();}
+function searchJobs(q){jobFilter.q=q;renderJobs();}
+
+async function openJob(id){
+  const j=allJobs.find(x=>x.id===id);if(!j)return;
+  const icon=ICONS[j.service_type?.toLowerCase()]||'📋';
+  const poster=j.pro_profiles;
+  const ini=(poster?.full_name||'?').split(' ').map(w=>w[0]).join('').toUpperCase().substring(0,2);
+  const isOwn=j.user_id===user?.id;
+  const{data:bids}=await db.from('pro_bids').select('*,pro_profiles(full_name,rating,trade,city)').eq('job_id',id).order('amount',{ascending:true});
+  const myBid=bids?.find(b=>b.user_id===user?.id);
+  const acceptedBid=bids?.find(b=>b.status==='accepted');
+  const canBid=!isOwn&&j.status==='open'&&!myBid;
+
+  const bHTML=(bids||[]).map(b=>{
+    const bi=(b.pro_profiles?.full_name||'?').split(' ').map(w=>w[0]).join('').toUpperCase().substring(0,2);
+    const acc=b.status==='accepted';
+    return `<div class="bitem" style="${acc?'border:2px solid var(--grn);background:var(--grbg)':''}">
+      <div class="bav">${bi}</div>
+      <div class="binfo">
+        <div class="bname">${b.pro_profiles?.full_name||'Pro'}${b.pro_profiles?.rating?' ⭐'+Number(b.pro_profiles.rating).toFixed(1):''}${acc?' ✅ ACCEPTED':''}</div>
+        <div style="font-size:11px;color:var(--t3);margin-bottom:3px">${b.pro_profiles?.trade||''}${b.pro_profiles?.city?' · '+b.pro_profiles.city:''}</div>
+        <div class="bnote">${b.note||'No note provided'}</div>
+      </div>
+      <div class="bamt">$${Number(b.amount).toLocaleString()}</div>
+      ${isOwn&&b.status==='pending'&&j.status==='open'?`<button class="bacc" onclick="acceptBid('${b.id}','${j.id}',${b.amount},'${b.user_id}','${b.pro_profiles?.full_name||'Pro'}')">Accept ✓</button>`:''}
     </div>`;
-  document.getElementById('ovl').classList.add('open');
+  }).join('')||'<div style="color:var(--t3);font-size:13px;padding:10px;text-align:center">No bids yet — be the first!</div>';
+
+  document.getElementById('modal-inner').innerHTML=`
+    <div class="mhdr">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="jicon" style="width:40px;height:40px;font-size:20px">${icon}</div>
+        <div class="mhtitle">${j.title}</div>
+      </div>
+      <button class="mx" onclick="closeModal()">✕</button>
+    </div>
+    <div class="mbody">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+        <div><div class="mprice">$${Number(j.budget).toLocaleString()}</div>
+        <div class="msub">📍 ${j.city||'TBD'} · 📅 ${j.deadline||'Flexible'}</div></div>
+        <span class="sbadge ${j.status==='open'?'s-open':'s-prog'}">${j.status==='open'?'🟢 Open for Bids':'🔵 In Progress'}</span>
+      </div>
+      <div class="msec"><div class="mlbl">Description</div><div class="mval">${j.description||'No description.'}</div></div>
+      <div class="sstrip">
+        <div class="sav">${ini}</div>
+        <div><div class="sname">${poster?.full_name||'Pro'}</div><div class="sstat">${poster?.trade||'Service Pro'}${poster?.rating?' · ⭐ '+Number(poster.rating).toFixed(1):''}</div></div>
+      </div>
+      ${canBid?`<div class="bidbox">
+        <div class="bbtitle">💬 Submit Your Bid</div>
+        <div class="bid-row">
+          <span style="font-size:13px;color:var(--t2)">Your price:</span>
+          <input class="bid-amt-inp" type="number" id="bid-amt" placeholder="$${j.budget}" min="1" onfocus="this.select()">
+          <span style="font-size:12px;color:var(--t2)">total</span>
+        </div>
+        <textarea class="bbnote" id="bid-note" placeholder="Why should they pick you? Your experience, what you'll bring, timeline..."></textarea>
+        <button class="bbsub" id="bid-btn" onclick="submitBid('${j.id}')">Submit Bid →</button>
+        <div class="bbfee">You keep 92% · Poster picks the winner · 8% fee only on completion</div>
+      </div>`:''}
+      ${myBid?`<div style="background:var(--grbg);border:1px solid var(--grn);border-radius:var(--r);padding:12px 14px;font-size:13px;color:var(--grn);font-weight:600;margin-bottom:16px">
+        ✅ You bid $${Number(myBid.amount).toLocaleString()} · ${myBid.status==='accepted'?'Your bid was ACCEPTED! 🎉':'Waiting for poster to choose'}
+      </div>`:''}
+      ${isOwn&&acceptedBid&&j.status==='in_progress'?`<div style="background:var(--bbg);border:1px solid var(--blue);border-radius:var(--r);padding:12px 14px;font-size:12px;color:var(--blue);font-weight:600;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
+        <span>🔵 In progress with ${acceptedBid.pro_profiles?.full_name||'Pro'}</span>
+        <button onclick="completeJob('${j.id}','${acceptedBid.user_id}','${acceptedBid.pro_profiles?.full_name||'Pro'}')" style="background:var(--grn);color:#fff;border:none;padding:6px 14px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">Mark Complete ✓</button>
+      </div>`:''}
+      <div class="bids-section">
+        <div class="blbl">All Bids (${(bids||[]).length})</div>${bHTML}
+      </div>
+    </div>`;
+  document.getElementById('modal-ovl').classList.add('open');
 }
 
-// ── POST ──
-function setPT(t){
-  PT=t;
-  document.getElementById('pt-job').className='post-type-opt'+(t==='job'?' sel-job':'');
-  document.getElementById('pt-eq').className='post-type-opt'+(t==='eq'?' sel-eq':'');
-  document.getElementById('job-fields').style.display=t==='job'?'':'none';
-  document.getElementById('eq-fields').style.display=t==='eq'?'':'none';
+async function submitBid(jid){
+  const amt=parseFloat(document.getElementById('bid-amt')?.value);
+  const note=document.getElementById('bid-note')?.value?.trim();
+  if(!amt||amt<=0)return toast('Enter a valid bid amount.');
+  if(!note)return toast('Add a note — tell them why you're the right pick.');
+  const btn=document.getElementById('bid-btn');
+  btn.disabled=true;btn.textContent='Submitting...';
+  const{error}=await db.from('pro_bids').insert({job_id:jid,user_id:user.id,amount:amt,note,status:'pending'});
+  btn.disabled=false;btn.textContent='Submit Bid →';
+  if(error)return toast(error.code==='23505'?'You already bid on this job.':'Error: '+error.message);
+  toast('✅ Bid submitted! You'll be notified if selected.');
+  closeModal();await loadJobs();
 }
 
-async function postListing(){
-  if(!user)return toast('Sign in first.');
-  const btn=document.getElementById('pbtn');btn.disabled=true;btn.textContent='Publishing...';
-  let error=null;
-  if(PT==='job'){
-    const ti=document.getElementById('p-ti').value.trim(),de=document.getElementById('p-de').value.trim(),
-      pr=parseFloat(document.getElementById('p-pr').value),ci=document.getElementById('p-ci').value.trim(),
-      dl=document.getElementById('p-dl').value.trim(),dur=document.getElementById('p-dur').value.trim(),
-      svc=document.getElementById('p-svc').value;
-    if(!ti||!pr||!ci)return (btn.disabled=false,btn.textContent='🚀 Publish →',toast('Fill in title, budget, and city.'));
-    const r=await db.from('pro_jobs').insert({user_id:user.id,title:ti,description:de,budget:pr,city:ci,deadline:dl||null,duration:dur||null,service_type:svc,status:'open'});
-    error=r.error;
-  } else {
-    const ti=document.getElementById('eq-ti').value.trim(),de=document.getElementById('eq-de').value.trim(),
-      pr=parseFloat(document.getElementById('eq-pr').value),ci=document.getElementById('eq-ci').value.trim(),
-      lt=document.getElementById('eq-type').value,ca=document.getElementById('eq-ca').value;
-    if(!ti||!pr||!ci)return (btn.disabled=false,btn.textContent='🚀 Publish →',toast('Fill in title, price, and city.'));
-    const r=await db.from('pro_listings').insert({user_id:user.id,title:ti,description:de,price:pr,city:ci,listing_type:lt,category:ca,price_period:lt==='rent'?document.getElementById('eq-pe').value:null,status:'active'});
-    error=r.error;
-  }
-  btn.disabled=false;btn.textContent='🚀 Publish →';
+async function acceptBid(bidId,jobId,amount,winnerId,winnerName){
+  await db.from('pro_bids').update({status:'rejected'}).eq('job_id',jobId).neq('id',bidId);
+  await db.from('pro_bids').update({status:'accepted'}).eq('id',bidId);
+  await db.from('pro_jobs').update({status:'in_progress',accepted_bid_id:bidId}).eq('id',jobId);
+  toast(`🎉 ${winnerName} accepted! Job is now in progress.`);
+  closeModal();await loadJobs();
+}
+
+async function completeJob(jobId,winnerId,winnerName){
+  await db.from('pro_jobs').update({status:'completed'}).eq('id',jobId);
+  const{data:p}=await db.from('pro_profiles').select('completed_jobs').eq('id',winnerId).single();
+  await db.from('pro_profiles').update({completed_jobs:(p?.completed_jobs||0)+1}).eq('id',winnerId);
+  toast(`✅ Job complete! Leave ${winnerName} a review.`);
+  closeModal();openReviewModal(winnerId,winnerName,jobId);await loadJobs();
+}
+
+let _stars=0;
+function openReviewModal(rid,rname,jid){
+  _stars=0;
+  const el=document.createElement('div');
+  el.className='ovl open';el.style.zIndex='600';el.id='rev-modal';
+  el.innerHTML=`<div class="modal" style="max-width:440px">
+    <div class="mhdr"><div class="mhtitle">Review ${rname}</div><button class="mx" onclick="document.getElementById('rev-modal').remove()">✕</button></div>
+    <div class="mbody">
+      <div class="mlbl" style="margin-bottom:8px">Rating</div>
+      <div class="star-picker">${[1,2,3,4,5].map(n=>`<button class="star-btn" data-n="${n}" onclick="pickStar(${n})" onmouseover="hoverStar(${n})" onmouseout="unhoverStar()">★</button>`).join('')}</div>
+      <div class="prow"><label class="plbl">Your Review</label><textarea class="pta" id="rev-txt" placeholder="What was it like working with ${rname}?"></textarea></div>
+      <button class="psub-btn" onclick="submitReview('${rid}','${jid}',this)">Submit Review →</button>
+    </div>
+  </div>`;
+  document.body.appendChild(el);
+}
+function pickStar(n){_stars=n;document.querySelectorAll('.star-btn').forEach(b=>b.classList.toggle('on',+b.dataset.n<=n));}
+function hoverStar(n){document.querySelectorAll('.star-btn').forEach(b=>b.style.opacity=+b.dataset.n<=n?'1':'.25');}
+function unhoverStar(){pickStar(_stars);}
+async function submitReview(rid,jid,btn){
+  if(!_stars)return toast('Select a rating.');
+  const comment=document.getElementById('rev-txt')?.value?.trim();
+  btn.disabled=true;btn.textContent='Saving...';
+  const{error}=await db.from('pro_reviews').insert({reviewer_id:user.id,reviewee_id:rid,job_id:jid,rating:_stars,comment:comment||null});
+  if(error){btn.disabled=false;btn.textContent='Submit Review →';return toast('Error: '+error.message);}
+  const{data:revs}=await db.from('pro_reviews').select('rating').eq('reviewee_id',rid);
+  if(revs?.length){const avg=revs.reduce((a,r)=>a+r.rating,0)/revs.length;await db.from('pro_profiles').update({rating:Math.round(avg*10)/10,review_count:revs.length}).eq('id',rid);}
+  document.getElementById('rev-modal')?.remove();
+  toast('⭐ Review submitted!');
+}
+
+async function submitJob(){
+  const title=document.getElementById('j-title').value.trim();
+  const service=document.getElementById('j-service').value;
+  const desc=document.getElementById('j-desc').value.trim();
+  const budget=parseFloat(document.getElementById('j-budget').value);
+  const city=document.getElementById('j-city').value.trim();
+  const date=document.getElementById('j-date').value;
+  const jtype=document.getElementById('j-type').value;
+  if(!title)return toast('Job title is required.');
+  if(!service)return toast('Select a service type.');
+  if(!desc)return toast('Describe the job.');
+  if(!budget||budget<=0)return toast('Enter your budget.');
+  if(!city)return toast('Enter the location.');
+  const btn=document.getElementById('post-job-btn');
+  btn.disabled=true;btn.textContent='Posting...';
+  const{error}=await db.from('pro_jobs').insert({user_id:user.id,title,description:desc,service_type:service,budget,city,deadline:date||null,job_type:jtype,tags:[],status:'open'});
+  btn.disabled=false;btn.textContent='Post This Job →';
   if(error)return toast('Error: '+error.message);
-  toast('🎉 Published successfully!');
-  document.querySelectorAll('.pinp,.pta').forEach(el=>el.value='');
-  await loadAll();go(PT==='job'?'jobs':'marketplace');
+  ['j-title','j-desc','j-budget','j-city','j-date'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('j-service').value='';
+  toast('🎉 Job posted! Pros will start bidding.');
+  await loadJobs();goPage('jobs');
 }
 
-// ── DASHBOARD ──
 async function loadDash(){
   if(!user)return;
-  const[{data:myJ},{data:myB},{data:myL}]=await Promise.all([
+  const[{data:mj},{data:mb}]=await Promise.all([
     db.from('pro_jobs').select('*,pro_bids(count)').eq('user_id',user.id).order('created_at',{ascending:false}),
-    db.from('pro_bids').select('*,pro_jobs(title,budget,status,city)').eq('user_id',user.id).order('created_at',{ascending:false}),
-    db.from('pro_listings').select('*').eq('user_id',user.id).neq('status','removed').order('created_at',{ascending:false})
+    db.from('pro_bids').select('*,pro_jobs(title,budget,status)').eq('user_id',user.id).order('created_at',{ascending:false})
   ]);
-  const won=(myB||[]).filter(b=>b.status==='accepted').length;
-  document.getElementById('d-posted').textContent=(myJ||[]).length;
-  document.getElementById('d-bids').textContent=(myB||[]).length;
-  document.getElementById('d-won').textContent=won;
-
-  // My jobs
-  const mj=document.getElementById('my-jobs');
-  mj.innerHTML=(myJ?.length)?myJ.map(j=>{
-    const bc=j.pro_bids?.[0]?.count||0;
-    return `<div class="jcard">
-      <div class="jicon other">📋</div>
-      <div class="jmain"><div class="jtitle">${j.title}</div><div class="jdesc">${j.city||''} · $${Number(j.budget).toLocaleString()} budget</div>
-      <div class="jmeta"><div class="jstat">🤝 ${bc} bid${bc!==1?'s':''}</div><div class="jstat" style="color:${j.status==='open'?'var(--grn)':j.status==='in_progress'?'var(--gold)':'var(--t3)'}">● ${j.status}</div></div></div>
-      <div class="jside"><button class="btn-bid" onclick="openJob('${j.id}')">View Bids</button></div>
-    </div>`;
-  }).join(''):'<div class="empty"><div class="eicon">📋</div><div class="emsg">No jobs posted yet.</div><button onclick="go('post')" style="background:var(--gold);color:#fff;border:none;padding:9px 20px;border-radius:var(--r);font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif">Post Your First Job</button></div>';
-
-  // My bids
-  document.getElementById('my-bids').innerHTML=(myB?.length)?myB.map(b=>`
-    <div class="jcard" style="cursor:default">
-      <div class="jicon other">🤝</div>
-      <div class="jmain"><div class="jtitle">${b.pro_jobs?.title||'Job'}</div>
-      <div class="jdesc">${b.note||'No message'}</div>
-      <div class="jmeta"><div class="jpay">$${Number(b.amount).toLocaleString()}</div>
-      <div class="jstat" style="color:${b.status==='accepted'?'var(--grn)':b.status==='rejected'?'var(--red)':'var(--t2)'}">● ${b.status}</div>${b.pro_jobs?.city?'<div class="jstat">📍 '+b.pro_jobs.city+'</div>':''}</div></div>
-    </div>`).join(''):'<div class="empty" style="padding:24px"><div class="eicon">🤝</div><div class="emsg">No bids placed yet.</div><button onclick="go('jobs')" style="background:var(--gold);color:#fff;border:none;padding:9px 20px;border-radius:var(--r);font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif">Browse Jobs</button></div>';
-
-  // My listings
-  const g=document.getElementById('my-listings');
-  g.innerHTML=(myL?.length)?'<div class="lgrid">'+myL.map(l=>{
-    const em=EM[l.category]||'📦';
-    const pr=l.listing_type==='sell'?'$'+Number(l.price).toLocaleString():'$'+l.price+'/'+(l.price_period||'day').charAt(0);
-    return `<div class="lcard"><div class="lcimg">${l.photo_url?'<img src="'+l.photo_url+'">':em}<span class="lbtype ${l.listing_type==='rent'?'brent':'bsell'}">${l.listing_type==='rent'?'Rent':'Sale'}</span><span class="lprice">${pr}</span></div><div class="lcbody"><div class="lctitle">${l.title}</div><div class="lcloc">${l.city||''}</div></div><div class="lcft"><span style="font-size:10px;color:var(--grn);font-weight:600">● Active</span><button onclick="delListing('${l.id}')" style="font-size:10px;background:none;border:none;color:var(--red);cursor:pointer">Remove</button></div></div>`;
-  }).join('')+'</div>':'<div class="empty" style="padding:24px"><div class="eicon">🔧</div><div class="emsg">No equipment listed.</div></div>';
+  document.getElementById('d-posted').textContent=(mj||[]).length;
+  document.getElementById('d-bids').textContent=(mb||[]).length;
+  document.getElementById('d-won').textContent=(mb||[]).filter(b=>b.status==='accepted').length;
+  const jEl=document.getElementById('my-jobs');
+  if(!(mj||[]).length){jEl.innerHTML='<div class="empty"><div class="eicon">📋</div><div class="emsg">No jobs posted yet.</div><button class="bbid" onclick="goPage('post-job')">Post Your First Job</button></div>';}
+  else{jEl.innerHTML=(mj||[]).map(j=>{
+    const bc=j.pro_bids?.[0]?.count||0;const icon=ICONS[j.service_type?.toLowerCase()]||'📋';
+    return `<div class="jcard" onclick="openJob('${j.id}')">
+      <div class="jicon">${icon}</div>
+      <div class="jmain"><div class="jtitle">${j.title}</div>
+      <div class="jmeta"><div class="jpay">$${Number(j.budget).toLocaleString()}</div><div class="jstat">${bc} bid${bc!==1?'s':''}</div><div class="jstat">📍 ${j.city||''}</div>
+      <span class="sbadge ${j.status==='open'?'s-open':j.status==='in_progress'?'s-prog':'s-done'}">${j.status}</span></div></div>
+      <div class="jside"><button class="bout" onclick="event.stopPropagation();openJob('${j.id}')">Manage</button></div>
+    </div>`;}).join('');}
+  const bEl=document.getElementById('my-bids');
+  if(!(mb||[]).length){bEl.innerHTML='<div class="empty"><div class="eicon">🤝</div><div class="emsg">No bids yet.</div><button class="bbid" onclick="goPage('jobs')">Browse Jobs</button></div>';}
+  else{bEl.innerHTML=(mb||[]).map(b=>`<div class="jcard">
+    <div class="jicon">${ICONS['other']}</div>
+    <div class="jmain"><div class="jtitle">${b.pro_jobs?.title||'Job'}</div>
+    <div class="bnote" style="font-size:12px;color:var(--t2);margin-bottom:6px">${b.note||''}</div>
+    <div class="jmeta"><div class="jpay">$${Number(b.amount).toLocaleString()} bid</div>
+    <span class="sbadge ${b.status==='accepted'?'s-open':b.status==='rejected'?'s-rej':'s-done'}">${b.status==='accepted'?'🎉 ACCEPTED':b.status==='rejected'?'❌ Not selected':'⏳ Pending'}</span></div>
+    </div></div>`).join('');}
 }
 
-async function delListing(id){
-  await db.from('pro_listings').update({status:'removed'}).eq('id',id).eq('user_id',user.id);
-  toast('Listing removed.');closeM();await loadAll();if(document.getElementById('pg-dashboard').classList.contains('active'))loadDash();
-}
+function closeModal(){document.getElementById('modal-ovl').classList.remove('open');}
+function maybeCloseModal(e){if(e.target===document.getElementById('modal-ovl'))closeModal();}
+function toast(m){const el=document.getElementById('toast-el');el.textContent=m;el.classList.add('show');clearTimeout(window._tt);window._tt=setTimeout(()=>el.classList.remove('show'),3500);}
 
-// ── MODAL ──
-function closeM(){document.getElementById('ovl').classList.remove('open');}
-function maybeClose(e){if(e.target===document.getElementById('ovl'))closeM();}
-function toast(m){const el=document.getElementById('tst');el.textContent=m;el.classList.add('show');clearTimeout(window._tt);window._tt=setTimeout(()=>el.classList.remove('show'),3500);}
-
-// ── INIT ──
-(async()=>{
-  try{
-    const{data:{session}}=await db.auth.getSession();
-    if(session?.user)await boot(session.user);
-  }catch(e){console.error('Session error:',e);}
-})();
+(async()=>{const{data:{session}}=await db.auth.getSession();if(session?.user)await initApp(session.user);})();
 </script>
-</body>
-</html>
+</body></html>
